@@ -1,0 +1,26 @@
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+
+vectorizer = TfidfVectorizer(stop_words='english')
+X = vectorizer.fit_transform(df['clean_text'])
+y = df['category']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
+
+knn = KNeighborsClassifier(n_neighbors=100)
+
+knn.fit(X_train, y_train)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+new_text = ["I love this movie! It's amazing."]
+new_text_vectorized = vectorizer.transform(new_text)
+predicted_sentiment = knn.predict(new_text_vectorized)
+print("Predicted Sentiment:", predicted_sentiment)
